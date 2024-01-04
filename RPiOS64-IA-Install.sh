@@ -7,6 +7,7 @@
 #########################################################################################################################################
 # Tested with image from:														                                                                                                 #
 # https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2021-11-08/2021-10-30-raspios-bullseye-arm64-lite.zip	 #
+# https://downloads.raspberrypi.org/raspios_lite_arm64/images/raspios_lite_arm64-2023-12-11/2023-12-11-raspios-bookworm-arm64-lite.img.xz
 #########################################################################################################################################
 
 #### SET SOME COLOURS ###################################################################################################################
@@ -92,7 +93,8 @@ THE DHCP SERVER ($YELLOW dhcpcd5 $NORMAL) WILL BE $RED REMOVED $NORMAL !!!
 =========================================================================================
 THE PIMOX REPO WILL BE ADDED IN : $YELLOW /etc/apt/sources.list.d/pimox.list $NORMAL CONFIGURATION :
 $GRAY# Pimox 7 Development Repo$NORMAL
-deb https://raw.githubusercontent.com/pimox/pimox7/master/ dev/
+# deb https://raw.githubusercontent.com/pimox/pimox7/master/ dev/
+deb http://download.proxmox.com/debian/pve/dists/bookworm/pve-no-subscription/binary-amd64/
 =========================================================================================
 THE NETWORK CONFIGURATION IN : $YELLOW /etc/network/interfaces $NORMAL WILL BE $RED CHANGED $NORMAL !!! TO :
 auto lo
@@ -140,8 +142,10 @@ hostnamectl set-hostname $HOSTNAME
 
 #### ADD SOURCE PIMOX7 + KEY & UPDATE & INSTALL RPI-KERNEL-HEADERS #######################################################################
 printf "# PiMox7 Development Repo
-deb https://raw.githubusercontent.com/pimox/pimox7/master/ dev/ \n" > /etc/apt/sources.list.d/pimox.list
-curl https://raw.githubusercontent.com/pimox/pimox7/master/KEY.gpg |  apt-key add -
+# deb https://raw.githubusercontent.com/pimox/pimox7/master/ dev/ \n" > /etc/apt/sources.list.d/pimox.list
+# curl https://raw.githubusercontent.com/pimox/pimox7/master/KEY.gpg |  apt-key add -
+echo "deb http://download.proxmox.com/debian/pve/dists/bookworm/pve-no-subscription/binary-amd64/" > /etc/apt/sources.list.d/pimox.list
+echo "deb http://deb.debian.org/debian bookworm contrib" > /etc/apt/sources.list.d/buster-contrib.list
 apt update && apt upgrade -y
 
 #### REMOVE DHCP, CLEAN UP ###############################################################################################################
